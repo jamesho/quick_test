@@ -4,7 +4,7 @@ require 'test/unit/ui/console/testrunner'
 
 # Runs a Test::Unit::TestSuite on the console.
 module QuickTest
-  class QuickTestRunner < Test::Unit::UI::Console::TestRunner
+  class TestRunner < Test::Unit::UI::Console::TestRunner
     attr_accessor :seconds_per_test
 
     def initialize(suite, output_level=Test::Unit::UI::NORMAL, io=STDOUT)
@@ -39,8 +39,9 @@ module QuickTest
         super
       end
     end
-
-  =begin
+  end
+end
+=begin
   private
     def attach_to_mediator
       @mediator.add_listener(Test::Unit::TestResult::FAULT, &method(:add_fault))
@@ -103,6 +104,4 @@ module QuickTest
     def output?(level)
       level <= @output_level
     end
-  =end
-  end
-end
+=end

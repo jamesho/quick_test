@@ -1,5 +1,5 @@
 require 'test/unit'
-require 'quick_test/quick_test_runner'
+require 'quick_test/test_runner'
 require 'quick_test/experiment'
 require 'quick_test/result'
 require 'quick_test/parameter'
