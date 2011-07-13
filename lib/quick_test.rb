@@ -1,5 +1,8 @@
 require 'test/unit'
 require 'quick_test/quick_test_runner'
+require 'quick_test/experiment'
+require 'quick_test/result'
+require 'quick_test/parameter'
 
 # TODO: run tests that failed the last time
 # TODO: figure out how to reload helpers
@@ -7,10 +10,12 @@ require 'quick_test/quick_test_runner'
 # TODO: blueprints don't get updated
 # TODO: reports2_test doesn't seem to work the second time around
 # TODO: get line number out
-class QuickTest
+module QuickTest
 
+  class << self
   attr_accessor :experiments
   attr_accessor :current_experiment
+
 
   def initialize args={}
     self.experiments = []
@@ -49,6 +54,7 @@ class QuickTest
   end
 =end
   def run test_path_or_experiment_number=nil, keyword=nil
+  self.experiments = []
     if test_path_or_experiment_number.is_a? Integer
       # TODO: handle bad numbers
       self.current_experiment = self.experiments[test_path_or_experiment_number]
@@ -94,6 +100,7 @@ class QuickTest
     end
     nil
   end
+end
 end
 
 # monkey patching!
