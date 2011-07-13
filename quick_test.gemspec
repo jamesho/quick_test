@@ -6,5 +6,5 @@ Gem::Specification.new do |s|
   s.summary = ""
   s.description = ""
   s.files = Dir["{lib}/**/*"] + ["MIT-LICENSE", "README"]
-  s.version = "0.0.1"
+  s.version = "0.0.5"
 end
