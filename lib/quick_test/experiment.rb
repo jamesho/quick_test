@@ -1,5 +1,4 @@
-require 'result'
-
+module QuickTest
 class Experiment
   attr_accessor :parameter
   attr_accessor :results
@@ -99,4 +98,5 @@ private
 
     console_puts "Successfully cleaned test names" if verbose
   end
+end
 end

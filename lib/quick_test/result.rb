@@ -1,3 +1,4 @@
+module QuickTest
 class Result
   attr_accessor :fail_stack_hash
   attr_accessor :error_stack_hash
@@ -35,4 +36,5 @@ class Result
       puts time.rjust(20).color(:green) + "  " + test_file.ljust(20).color(:green) + "  " + test_name.ljust(20).color(:green).bright
     end
   end
+end
 end

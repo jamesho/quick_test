@@ -3,6 +3,7 @@ require 'test/unit/ui/testrunnerutilities'
 require 'test/unit/ui/console/testrunner'
 
 # Runs a Test::Unit::TestSuite on the console.
+module QuickTest
 class QuickTestRunner < Test::Unit::UI::Console::TestRunner
   attr_accessor :seconds_per_test
 
@@ -103,4 +104,5 @@ private
     level <= @output_level
   end
 =end
+end
 end

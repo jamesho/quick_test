@@ -1,3 +1,4 @@
+module QuickTest
 class Parameter
   attr_accessor :test_path, :keyword
   attr_accessor :test_class
@@ -44,4 +45,5 @@ class Parameter
     desc << (self.keyword.blank? ? "".ljust(10) : self.keyword.ljust(10))
     desc
   end
+end
 end
