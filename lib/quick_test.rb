@@ -1,4 +1,3 @@
-require 'test/unit'
 require 'quick_test/quick_test'
 require 'quick_test/experiment'
 require 'quick_test/parameter'
@@ -22,16 +21,9 @@ end
 # monkey patching!
 module Test
   module Unit
-
     # Encapsulates a test failure. Created by Test::Unit::TestCase
     # when an assertion fails.
     class Failure
-      attr_reader :test_name, :location, :message
-
-      SINGLE_CHARACTER = 'F'
-
-      # Creates a new Failure with the given location and
-      # message.
       def initialize(test_name, location, message)
         @test_name = test_name
         @location = highlight_useful_lines(location)
@@ -49,7 +41,6 @@ module Test
           else
             l.color("#FFC482")
           end
-
         end
       end
 
@@ -57,63 +48,16 @@ module Test
       def single_character_display
         SINGLE_CHARACTER.color(:red)
       end
-
-      # Returns a brief version of the error description.
-      def short_display
-        "#@test_name: #{@message.split("\n")[0]}"
-      end
-
-      # Returns a verbose version of the error description.
-      def long_display
-        location_display = if(location.size == 1)
-          location[0].sub(/\A(.+:\d+).*/, ' [\\1]')
-        else
-          "\n    [#{location.join("\n     ")}]"
-        end
-        "Failure:\n#@test_name#{location_display}:\n#@message"
-      end
-
-      # Overridden to return long_display.
-      def to_s
-        long_display
-      end
     end
   end
 end
 
 module Test
   module Unit
-
-    # Encapsulates an error in a test. Created by
-    # Test::Unit::TestCase when it rescues an exception thrown
-    # during the processing of a test.
     class Error
-      include Util::BacktraceFilter
-
-      attr_reader(:test_name, :exception)
-
-      SINGLE_CHARACTER = 'E'
-
-      # Creates a new Error with the given test_name and
-      # exception.
-      def initialize(test_name, exception)
-        @test_name = test_name
-        @exception = exception
-      end
-
       # Returns a single character representation of an error.
       def single_character_display
         SINGLE_CHARACTER.color(:red)
-      end
-
-      # Returns the message associated with the error.
-      def message
-        "#{@exception.class.name}: #{@exception.message}"
-      end
-
-      # Returns a brief version of the error description.
-      def short_display
-        "#@test_name: #{message.split("\n")[0]}"
       end
 
       # Returns a verbose version of the error description.
@@ -134,11 +78,6 @@ module Test
             bt.color("#FFC482")
           end
         end
-      end
-
-      # Overridden to return long_display.
-      def to_s
-        long_display
       end
     end
   end
