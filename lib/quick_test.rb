@@ -1,5 +1,5 @@
 require 'test/unit'
-require 'quick_test_runner'
+require 'quick_test/quick_test_runner'
 
 # TODO: run tests that failed the last time
 # TODO: figure out how to reload helpers
