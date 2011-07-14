@@ -6,9 +6,11 @@ require 'test/unit/ui/console/testrunner'
 module QuickTest
   class TestRunner < Test::Unit::UI::Console::TestRunner
     attr_accessor :seconds_per_test
+    attr_accessor :configuration
 
-    def initialize(suite, output_level=Test::Unit::UI::NORMAL, io=STDOUT)
-      super
+    def initialize(configuration, suite, output_level=Test::Unit::UI::NORMAL, io=STDOUT)
+      super suite, output_level, io
+      self.configuration = configuration
       self.seconds_per_test = {}
       @start_time = nil
     end
@@ -27,12 +29,12 @@ module QuickTest
       duration = Time.now - @start_time
       self.seconds_per_test[name] = duration
 
-      if duration > 1
-        output_single("O".color(:red), Test::Unit::UI::PROGRESS_ONLY) unless (@already_outputted)
+      if duration > self.configuration.threshold_slow_error and self.configuration.show_metrics
+        output_single("O".color(:yellow).bright, Test::Unit::UI::PROGRESS_ONLY) unless (@already_outputted)
         nl(Test::Unit::UI::VERBOSE)
         @already_outputted = false
-      elsif duration > 0.5
-        output_single("o".color(:yellow), Test::Unit::UI::PROGRESS_ONLY) unless (@already_outputted)
+      elsif duration > self.configuration.threshold_slow_warning and self.configuration.show_metrics
+        output_single("o".color(:yellow).bright, Test::Unit::UI::PROGRESS_ONLY) unless (@already_outputted)
         nl(Test::Unit::UI::VERBOSE)
         @already_outputted = false
       else

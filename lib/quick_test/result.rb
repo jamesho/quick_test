@@ -22,19 +22,28 @@ module QuickTest
       names
     end
 
-    def output_metrics
-      tests_longer_than_threshold = self.seconds_per_test.collect {|test,time| [test, time] if time > 0.5}.compact
+    def output_metrics configuration
+      tests_longer_than_threshold = self.seconds_per_test.collect {|test,time| [test, time] if time > configuration.threshold_slow_warning}.compact
       sorted_tests = tests_longer_than_threshold.sort {|x, y| y[1] <=> x[1]}
 
-      puts "Tests that took longer than threshold (#{sorted_tests.length} occurences): "
-      puts "Time (s)".rjust(20).color(:blue).bright + "  " + "Test File".ljust(20).color(:blue).bright + "  " + "Test Name".ljust(20).color(:blue).bright
+      tr = TableRenderer.new \
+        :title => "Tests that took longer than the threshold of #{configuration.threshold_slow_warning} seconds (#{sorted_tests.length} occurences):",
+        :columns => [
+          ["Time (s)", 8, TableRenderer::ALIGN_RIGHT],
+          ["Test Class", 30, TableRenderer::ALIGN_LEFT],
+          ["Test Name", 50, TableRenderer::ALIGN_LEFT]
+        ],
+        :no_data_output => "No tests took longer than the threshold."
 
+      data = []
       sorted_tests.each do |t|
-        time = "#{t[1]}"
+        time = t[1]
         test_name = t[0][/(.*)\(.*\)$/,1]
-        test_file = t[0].gsub(test_name, "").delete('()')
-        puts time.rjust(20).color(:green) + "  " + test_file.ljust(20).color(:green) + "  " + test_name.ljust(20).color(:green).bright
+        test_class = t[0].gsub(test_name, "").delete('()')
+        data << [time, test_class, test_name]
       end
+      tr.render_with_data data
+
     end
   end
 end

@@ -1,8 +1,10 @@
-require 'quick_test/quick_test'
+require 'quick_test/interface'
+require 'quick_test/configuration'
 require 'quick_test/experiment'
 require 'quick_test/parameter'
 require 'quick_test/result'
 require 'quick_test/test_runner'
+require 'quick_test/table_renderer'
 
 # TODO: run tests that failed the last time
 # TODO: figure out how to reload helpers
@@ -12,8 +14,8 @@ require 'quick_test/test_runner'
 # TODO: get line number out
 module QuickTest
   class << self
-    def start
-      QuickTest.new
+    def start options={}
+      Interface.new options
     end
   end
 end
@@ -37,7 +39,7 @@ module Test
           if l.include?(name)
             l.color(:green).bright
           elsif (l.start_with?("app/") or l.start_with?("lib/"))
-            l.color("#FFFF00")
+            l.color("#FFFF00").bright
           else
             l.color("#FFC482")
           end
@@ -46,18 +48,19 @@ module Test
 
       # Returns a single character representation of a failure.
       def single_character_display
-        SINGLE_CHARACTER.color(:red)
+        SINGLE_CHARACTER.color(:red).bright
       end
     end
   end
 end
 
+# monkey patching!
 module Test
   module Unit
     class Error
       # Returns a single character representation of an error.
       def single_character_display
-        SINGLE_CHARACTER.color(:red)
+        SINGLE_CHARACTER.color(:red).bright
       end
 
       # Returns a verbose version of the error description.
@@ -73,7 +76,7 @@ module Test
           if bt.include?(name)
             bt.color(:green).bright
           elsif (bt.start_with?("/app/") or bt.start_with?("app/") or bt.start_with?("/lib/") or bt.start_with?("lib/"))
-            bt.color("#FFFF00")
+            bt.color("#FFFF00").bright
           else
             bt.color("#FFC482")
           end

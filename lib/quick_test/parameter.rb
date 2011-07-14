@@ -1,6 +1,7 @@
 module QuickTest
   class Parameter
-    attr_accessor :test_path, :keyword
+    attr_accessor :test_path
+    attr_accessor :keyword
     attr_accessor :test_class
 
     def initialize test_path, keyword
@@ -40,10 +41,9 @@ module QuickTest
       !self.keyword.blank?
     end
 
-    def to_s
-      desc = self.test_path.ljust(20) + " "
-      desc << (self.keyword.blank? ? "".ljust(10) : self.keyword.ljust(10))
-      desc
+    def list
+      [self.test_path, self.keyword]
     end
+
   end
 end

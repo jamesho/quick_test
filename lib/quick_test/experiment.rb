@@ -3,10 +3,12 @@ module QuickTest
     attr_accessor :parameter
     attr_accessor :results
     attr_accessor :frozen_result
+    attr_accessor :configuration
 
-    def initialize test_path, keyword
+    def initialize configuration, test_path, keyword
       self.results = []
       self.parameter = Parameter.new test_path, keyword
+      self.configuration = configuration
     end
 
     def run
@@ -32,7 +34,7 @@ module QuickTest
 
     def output_metrics number=nil
       result = number ? self.results[number] : self.results.last
-      result.output_metrics
+      result.output_metrics self.configuration
     end
 
     def run_faults
@@ -49,8 +51,8 @@ module QuickTest
       self.results[number]
     end
 
-    def to_s
-      "#{self.parameter} #{self.results.size.to_s.rjust(7)}"
+    def list
+      self.parameter.list + [self.results.size]
     end
 
   private
@@ -69,11 +71,11 @@ module QuickTest
           test_class.tests(helper)
         end
 
-        runner = TestRunner.new(test_suite)
+        runner = TestRunner.new(self.configuration, test_suite)
         runner.start
 
         result = Result.new(runner)
-        result.output_metrics
+        result.output_metrics(self.configuration) if self.configuration.show_metrics
         self.results << result
 
         if self.parameter.tests_filtered?
